@@ -1,7 +1,8 @@
-# 📸 StoryLens - AI-Powered Photo Story Generator
+# 📸 StoryLens - Transformer.js ( LOCAL LLM) AI-Powered multo modal Photo Story Generator
 
 StoryLens is a multi-modal application that transforms images into captivating stories with AI-generated narration. Using cutting-edge machine learning models, it analyzes images to generate descriptive captions and creates engaging narratives with optional audio narration.
-![image](https://github.com/user-attachments/assets/728ad943-bf7b-4ad4-a835-dea1445a2c44)
+![image](https://github.com/user-attachments/assets/3312eb6a-56f4-4d95-81b1-e770718f8798)
+
 
 ## 🌟 Features
 
