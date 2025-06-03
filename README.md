@@ -1,6 +1,7 @@
 # 📸 StoryLens - AI-Powered Photo Story Generator
 
 StoryLens is a multi-modal application that transforms images into captivating stories with AI-generated narration. Using cutting-edge machine learning models, it extracts text from images using OCR (Optical Character Recognition) and creates engaging narratives with optional audio narration.
+![image](https://github.com/user-attachments/assets/728ad943-bf7b-4ad4-a835-dea1445a2c44)
 
 ## 🌟 Features
 
