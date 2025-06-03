@@ -45,15 +45,15 @@ let textToSpeechPipeline = null;
 // Function to get or initialize the image-to-text pipeline
 async function getImageToTextPipeline() {
   if (!imageToTextPipeline) {
-    console.log("Loading TrOCR image-to-text pipeline...");
+    console.log("Loading ViT-GPT2 image captioning pipeline...");
     imageToTextPipeline = await pipeline(
       "image-to-text",
-      "Xenova/trocr-base-handwritten",
+      "Xenova/vit-gpt2-image-captioning",
       {
         quantized: true,
       }
     );
-    console.log("TrOCR pipeline loaded successfully!");
+    console.log("ViT-GPT2 image captioning pipeline loaded successfully!");
   }
   return imageToTextPipeline;
 }
@@ -79,36 +79,36 @@ async function getTextToSpeechPipeline() {
   return textToSpeechPipeline;
 }
 
-// Function to generate story from image using TrOCR
+// Function to generate story from image using ViT-GPT2 image captioning
 async function generateStoryFromImage(imagePath) {
   try {
-    console.log("Starting image analysis with TrOCR...");
+    console.log("Starting image analysis with ViT-GPT2...");
 
     // Get the image-to-text pipeline
     const captioner = await getImageToTextPipeline();
 
-    // Perform OCR on the image
-    console.log("Performing OCR on image...");
+    // Generate caption from the image
+    console.log("Generating caption from image...");
     const result = await captioner(imagePath);
 
-    console.log("OCR result:", result);
+    console.log("Caption result:", result);
 
-    // Extract the text from the result
-    let extractedText = "";
+    // Extract the caption from the result
+    let caption = "";
     if (Array.isArray(result) && result.length > 0) {
-      extractedText = result[0].generated_text || "";
+      caption = result[0].generated_text || "";
     } else if (result && result.generated_text) {
-      extractedText = result.generated_text;
+      caption = result.generated_text;
     }
 
-    if (!extractedText || extractedText.trim().length === 0) {
-      throw new Error("No text could be extracted from the image");
+    if (!caption || caption.trim().length === 0) {
+      throw new Error("No caption could be generated from the image");
     }
 
-    console.log("Extracted text:", extractedText);
+    console.log("Generated caption:", caption);
 
-    // Create a story based on the extracted text
-    const story = createStoryFromText(extractedText);
+    // Create a story based on the caption
+    const story = createStoryFromCaption(caption);
 
     console.log("Generated story:", story);
     return story;
@@ -118,17 +118,16 @@ async function generateStoryFromImage(imagePath) {
   }
 }
 
-// Function to create a story from extracted text
-function createStoryFromText(extractedText) {
-  const text = extractedText.trim();
+// Function to create a story from image caption
+function createStoryFromCaption(caption) {
+  const text = caption.trim();
 
-  // If the text is very short, expand it into a story
-  if (text.length < 50) {
-    return `${text}.`;
-  }
+  // Create an engaging story based on the image caption
+  const story = `Looking at this image, we see ${text}. This scene tells a captivating story of a moment frozen in time. The details within the frame speak to something deeper - a narrative that unfolds not just in what we observe, but in what we imagine beyond the edges of the photograph.
 
-  // If it's longer text, create a narrative around it
-  return `${text}`;
+This image invites us to pause and reflect on the stories that surround us every day. It reminds us that beauty and meaning can be found in the most unexpected places, and that every photograph has the power to transport us to different worlds, evoke emotions, and inspire our imagination. In this single frame, we find a gateway to countless possibilities and interpretations.`;
+
+  return story;
 }
 
 // Function to generate audio from text using TTS
@@ -182,7 +181,7 @@ router.post("/upload", upload.single("image"), async (req, res) => {
     console.log(`Image path: ${imagePath}`);
     console.log(`File exists: ${fs.existsSync(imagePath)}`);
 
-    // Generate story from image using TrOCR
+    // Generate story from image using ViT-GPT2
     console.log("Starting story generation...");
     let story;
     try {
@@ -190,7 +189,7 @@ router.post("/upload", upload.single("image"), async (req, res) => {
     } catch (storyError) {
       console.error("Story generation failed:", storyError);
       return res.status(500).json({
-        error: "Failed to extract text from image",
+        error: "Failed to generate caption from image",
         details: storyError.message,
       });
     }

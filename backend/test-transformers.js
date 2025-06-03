@@ -2,34 +2,36 @@ const { pipeline } = require("@huggingface/transformers");
 
 async function testTransformersJS() {
   try {
-    console.log("Testing Transformers.js TrOCR pipeline...");
+    console.log(
+      "Testing Transformers.js ViT-GPT2 image captioning pipeline..."
+    );
 
-    // Initialize the TrOCR pipeline
+    // Initialize the ViT-GPT2 image captioning pipeline
     const captioner = await pipeline(
       "image-to-text",
-      "Xenova/trocr-base-handwritten",
+      "Xenova/vit-gpt2-image-captioning",
       {
         quantized: true,
       }
     );
 
-    console.log("TrOCR pipeline loaded successfully!");
+    console.log("ViT-GPT2 image captioning pipeline loaded successfully!");
 
-    // Test with a sample image URL (handwritten text)
+    // Test with a sample image URL
     const testImageUrl =
-      "https://huggingface.co/datasets/Xenova/transformers.js-docs/resolve/main/handwriting.jpg";
+      "https://huggingface.co/datasets/Narsil/image_dummy/resolve/main/parrots.png";
 
-    console.log("Performing OCR on test image...");
+    console.log("Generating caption for test image...");
     const result = await captioner(testImageUrl);
 
-    console.log("OCR result:", result);
+    console.log("Caption result:", result);
 
     if (Array.isArray(result) && result.length > 0) {
-      console.log("✅ Success! Extracted text:", result[0].generated_text);
+      console.log("✅ Success! Generated caption:", result[0].generated_text);
     } else if (result && result.generated_text) {
-      console.log("✅ Success! Extracted text:", result.generated_text);
+      console.log("✅ Success! Generated caption:", result.generated_text);
     } else {
-      console.log("❌ No text extracted");
+      console.log("❌ No caption generated");
     }
   } catch (error) {
     console.error("❌ Error testing Transformers.js:", error.message);

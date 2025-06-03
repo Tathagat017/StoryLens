@@ -1,12 +1,12 @@
 # 📸 StoryLens - AI-Powered Photo Story Generator
 
-StoryLens is a multi-modal application that transforms images into captivating stories with AI-generated narration. Using cutting-edge machine learning models, it extracts text from images using OCR (Optical Character Recognition) and creates engaging narratives with optional audio narration.
+StoryLens is a multi-modal application that transforms images into captivating stories with AI-generated narration. Using cutting-edge machine learning models, it analyzes images to generate descriptive captions and creates engaging narratives with optional audio narration.
 ![image](https://github.com/user-attachments/assets/728ad943-bf7b-4ad4-a835-dea1445a2c44)
 
 ## 🌟 Features
 
-- **Image-to-Text Extraction**: Uses TrOCR (Transformer-based OCR) to extract text from images
-- **Story Generation**: Creates engaging narratives based on extracted text
+- **Image Captioning**: Uses ViT-GPT2 to generate descriptive captions from images
+- **Story Generation**: Creates engaging narratives based on image content
 - **Audio Narration**: Generates audio narration using Text-to-Speech models
 - **Local AI Processing**: All AI processing runs locally using Transformers.js
 - **Modern UI**: Beautiful, responsive interface built with React and Mantine UI
@@ -32,12 +32,12 @@ StoryLens is a multi-modal application that transforms images into captivating s
 
 ## 🤖 AI Models Used
 
-### Image-to-Text (OCR)
+### Image Captioning
 
-- **Primary Model**: `Xenova/trocr-base-handwritten`
-- **Type**: TrOCR (Transformer-based Optical Character Recognition)
-- **Purpose**: Extracts text from handwritten and printed text in images
-- **Architecture**: Vision Encoder-Decoder with BEiT encoder and RoBERTa decoder
+- **Primary Model**: `Xenova/vit-gpt2-image-captioning`
+- **Type**: ViT-GPT2 (Vision Transformer + GPT-2)
+- **Purpose**: Generates descriptive captions from images
+- **Architecture**: Vision Transformer encoder with GPT-2 decoder
 
 ### Text-to-Speech (Optional)
 
@@ -53,10 +53,10 @@ StoryLens is a multi-modal application that transforms images into captivating s
 The application uses Transformers.js pipelines for local AI processing:
 
 ```javascript
-// Image-to-Text Pipeline
-const imageToTextPipeline = await pipeline(
+// Image Captioning Pipeline
+const imageCaptioningPipeline = await pipeline(
   "image-to-text",
-  "Xenova/trocr-base-handwritten",
+  "Xenova/vit-gpt2-image-captioning",
   { quantized: true }
 );
 
@@ -296,17 +296,17 @@ const imageToTextPipeline = await pipeline(
 - Multer middleware validates file type and size
 - Image is saved to the uploads directory
 
-### 2. Text Extraction (OCR)
+### 2. Image Captioning
 
-- TrOCR model analyzes the uploaded image
-- Extracts any visible text using transformer architecture
-- Returns structured text data
+- ViT-GPT2 model analyzes the uploaded image
+- Generates descriptive captions using vision transformer architecture
+- Returns structured caption data
 
 ### 3. Story Generation
 
-- Extracted text is processed by story generation logic
-- Creates engaging narratives based on text content
-- Handles both short phrases and longer text passages
+- Generated caption is processed by story generation logic
+- Creates engaging narratives based on image content
+- Expands captions into full stories with context
 
 ### 4. Audio Generation (Optional)
 
